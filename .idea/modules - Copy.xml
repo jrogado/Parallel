@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Calculator/Calculator.iml" filepath="$PROJECT_DIR$/Calculator/Calculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/QuickSort/QuickSort.iml" filepath="$PROJECT_DIR$/QuickSort/QuickSort.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RecursiveMin/RecursiveMin.iml" filepath="$PROJECT_DIR$/RecursiveMin/RecursiveMin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StreamParallel/StreamParallel.iml" filepath="$PROJECT_DIR$/StreamParallel/StreamParallel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StreamTest/StreamTest.iml" filepath="$PROJECT_DIR$/StreamTest/StreamTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sum/Sum.iml" filepath="$PROJECT_DIR$/Sum/Sum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SumFork/SumFork.iml" filepath="$PROJECT_DIR$/SumFork/SumFork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SumForkJoin/SumForkJoin.iml" filepath="$PROJECT_DIR$/SumForkJoin/SumForkJoin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SumStream/SumStream.iml" filepath="$PROJECT_DIR$/SumStream/SumStream.iml" />
+    </modules>
+  </component>
+</project>
