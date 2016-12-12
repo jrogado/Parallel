@@ -13,7 +13,7 @@ import static java.lang.Runtime.getRuntime;
 public class QuickSortParallel {
     private static int sequentialThreshold;
     private static int[] globalArray;
-    private final ForkJoinPool forkJoinPool;
+    private final ForkJoinPool pool;
 
     private QuickSortParallel(int n) {
             
@@ -28,7 +28,7 @@ public class QuickSortParallel {
         // for(int i = 0; i < 100; i++)
         //    System.out.print(globalArray[i] + " ");
         // System.out.println();
-        forkJoinPool = new ForkJoinPool();
+        pool = new ForkJoinPool();
     }
     
     public static void main(String[] args) throws InterruptedException {
@@ -42,7 +42,7 @@ public class QuickSortParallel {
         if (args.length > 0)
             nvalues = Integer.decode(args[0]);
 
-        sequentialThreshold = nvalues / (8 * nCores);
+        sequentialThreshold = nvalues / (16 * nCores);
         int depthRemaining = (int) (Math.log(nCores) / Math.log(2)) + 4;
 
         System.out.println("Number of cores: " + nCores + " Number of values: "
@@ -64,7 +64,8 @@ public class QuickSortParallel {
         System.out.println();
     }
     private void qsort(int lowerIndex, int higherIndex) {
-        forkJoinPool.invoke(new quickSortParallel(lowerIndex, higherIndex));
+        quickSortParallel qs = new quickSortParallel(lowerIndex, higherIndex);
+        pool.invoke(qs);
     }
 
     class quickSortParallel extends RecursiveAction {
@@ -79,8 +80,8 @@ public class QuickSortParallel {
         protected void compute() {
             int i = myLower;
             int j = myHigher;
-            boolean left = FALSE;
-            boolean right = FALSE;
+            boolean leftFork = FALSE;
+            boolean rightFork = FALSE;
             quickSortParallel rightqSort = null;
             quickSortParallel leftqSort = null;
             // calculate pivot number, I am taking pivot as middle index number
@@ -88,10 +89,8 @@ public class QuickSortParallel {
             // Divide into two arrays
             while (i <= j) {
                 /*
-                  In each iteration, we will identify a number from left side which
-                  is greater then the pivot value, and also we will identify a number
-                  from right side which is less then the pivot value. Once the search
-                  is done, then we exchange both numbers.
+                 Swap numbers less than pivot to the left
+                 and numbers larger than pivot to the right
                  */
                 while (globalArray[i] < pivot) {
                     i++;
@@ -113,7 +112,7 @@ public class QuickSortParallel {
                 } else {
                     leftqSort = new quickSortParallel(myLower, j);
                     leftqSort.fork();
-                    left = TRUE;
+                    leftFork = TRUE;
                 }
             if (i < myHigher)
                 if ((myHigher-i) < sequentialThreshold) {
@@ -121,11 +120,12 @@ public class QuickSortParallel {
                 } else {
                     rightqSort = new quickSortParallel(i, myHigher);
                     rightqSort.fork();
-                    right = TRUE;
+                    rightFork = TRUE;
+                    // rightqSort.compute();
                 }
-            if (left)
+            if (leftFork)
                 leftqSort.join();
-            if(right)
+            if(rightFork)
                 rightqSort.join();
         }
     }
