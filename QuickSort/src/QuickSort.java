@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Created by Jose Rogado on 21-11-2014.
  */
@@ -57,13 +59,26 @@ public class QuickSort {
     }
 
     public static void main(String a[]){
+        int nValues = 100_000_000;
+        int[] globalArray = new int[nValues];
+        long startTime;
+        long stopTime;
 
-        QuickSort sorter = new QuickSort();
-        int[] input = {24,2,45,20,56,75,2,56,99,53,12,24,2,45,20,56,75,2,56,99,53,12};
-        sorter.sort(input);
-        for(int i:input){
-            System.out.print(i);
-            System.out.print(" ");
+        Random randomNumber = new Random();
+        for (int i = 0; i < nValues; i++) {
+            globalArray[i] = randomNumber.nextInt(nValues);
         }
+        QuickSort sorter = new QuickSort();
+        // int[] input = {24,2,45,20,56,75,2,56,99,53,12,24,2,45,20,56,75,2,56,99,53,12};
+        System.out.println("Sorting " + globalArray.length + " values");
+        startTime = System.currentTimeMillis();
+        sorter.sort(globalArray);
+        stopTime = System.currentTimeMillis();
+        long parallelTime = stopTime - startTime;
+        System.out.println("Quicksort took " + parallelTime + " ms");
+        for(int i = 0; i < 100; i++)
+            System.out.print(globalArray[i] + " ");
+        System.out.println();
+
     }
 }
