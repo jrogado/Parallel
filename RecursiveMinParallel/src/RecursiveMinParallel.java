@@ -1,6 +1,6 @@
-/**
- * Created by Jose Rogado on 28-11-2016.
- * Uses RecursiveTask to recursively calculate the minimum of N values
+/*
+  Created by Jose Rogado on 28-11-2016.
+  Uses RecursiveTask to recursively calculate the minimum of N values
  */
 
 import java.text.DecimalFormat;
@@ -9,12 +9,12 @@ import java.util.concurrent.*;
 import static java.lang.Runtime.*;
 
 public class RecursiveMinParallel {
-    public static int sequentialThreshold;
+    private static int sequentialThreshold;
     private static int[] globalArray;
     private final ForkJoinPool forkJoinPool;
     // private final int SEQUENTIAL_THRESHOLD;
 
-    private RecursiveMinParallel(int n, int cores) {
+    private RecursiveMinParallel(int n) {
         globalArray = new int[n];
         Random randomNumber = new Random();
         for (int i = 0; i < n; i++) {
@@ -32,22 +32,22 @@ public class RecursiveMinParallel {
     public static void main(String[] args) throws InterruptedException {
 
         int nvalues = 40_000_000;
-        int final_min = 0;
+        int final_min;
         long startTime;
         long stopTime;
 
         // Number of available processors
-        int ncores = getRuntime().availableProcessors();
+        int nCores = getRuntime().availableProcessors();
         if (args.length > 0)
             nvalues = Integer.decode(args[0]);
 
-        sequentialThreshold = nvalues/(8*ncores);
-        int depthRemaining = (int) (Math.log(ncores)/Math.log(2)) + 4;
+        sequentialThreshold = nvalues/(8*nCores);
+        int depthRemaining = (int) (Math.log(nCores)/Math.log(2)) + 4;
 
-        System.out.println("Number of cores: " + ncores + " Number of values: "
+        System.out.println("Number of cores: " + nCores + " Number of values: "
                                    + nvalues + " Threshold: " + sequentialThreshold + " Depth: " + depthRemaining);
         // Initialization
-        RecursiveMinParallel ParallelMin = new RecursiveMinParallel(nvalues, ncores);
+        RecursiveMinParallel ParallelMin = new RecursiveMinParallel(nvalues);
         // Serial minimum
         startTime = System.currentTimeMillis();
         // Calculate minimum here
@@ -65,7 +65,7 @@ public class RecursiveMinParallel {
         System.out.println("Performance Improvement = " + df.format((float) serialTime / (float) parallelTime));
 
     }
-    int processInParallel(int[] Array, int index, int arrayLength) {
+    private int processInParallel(int[] Array, int index, int arrayLength) {
         return forkJoinPool.invoke(new RecursiveMin(Array, index, arrayLength));
     }
     class RecursiveMin extends RecursiveTask<Integer> {
