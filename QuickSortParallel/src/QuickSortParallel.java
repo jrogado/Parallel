@@ -101,7 +101,7 @@ public class QuickSortParallel {
                 }
                 if (i <= j) {
                     exchangeNumbers(i, j);
-                    //move index to next position on both sides
+                    /* move index to next position on both sides */
                     i++;
                     j--;
                 }
@@ -151,7 +151,7 @@ public class QuickSortParallel {
             }
             if (i <= j) {
                 exchangeNumbers(i, j);
-                //move index to next position on both sides
+                /* move index to next position on both sides */
                 i++;
                 j--;
             }

@@ -12,7 +12,6 @@ public class RecursiveMinParallel {
     private static int sequentialThreshold;
     private static int[] globalArray;
     private final ForkJoinPool forkJoinPool;
-    // private final int SEQUENTIAL_THRESHOLD;
 
     private RecursiveMinParallel(int n) {
         globalArray = new int[n];
@@ -27,11 +26,10 @@ public class RecursiveMinParallel {
         //    System.out.print(globalArray[i] + " ");
         // System.out.println();
         forkJoinPool = new ForkJoinPool();
-        // SEQUENTIAL_THRESHOLD = n/(4*cores);
     }
     public static void main(String[] args) throws InterruptedException {
 
-        int nvalues = 40_000_000;
+        int nvalues = 100_000_000;
         int final_min;
         long startTime;
         long stopTime;
