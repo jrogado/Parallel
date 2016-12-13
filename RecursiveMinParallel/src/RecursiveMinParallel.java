@@ -11,7 +11,7 @@ import static java.lang.Runtime.*;
 public class RecursiveMinParallel {
     private static int sequentialThreshold;
     private static int[] globalArray;
-    private final ForkJoinPool forkJoinPool;
+    private final ForkJoinPool pool;
 
     private RecursiveMinParallel(int n) {
         globalArray = new int[n];
@@ -20,12 +20,7 @@ public class RecursiveMinParallel {
             globalArray[i] = randomNumber.nextInt(n);
         }
         System.out.println("Calculating the minimum of " + globalArray.length + " values");
-        // for(int i:globalArray)
-        //    System.out.print(i + " ");
-        // for(int i = 0; i < 100; i++)
-        //    System.out.print(globalArray[i] + " ");
-        // System.out.println();
-        forkJoinPool = new ForkJoinPool();
+        pool = new ForkJoinPool();
     }
     public static void main(String[] args) throws InterruptedException {
 
@@ -64,7 +59,8 @@ public class RecursiveMinParallel {
 
     }
     private int processInParallel(int[] Array, int index, int arrayLength) {
-        return forkJoinPool.invoke(new RecursiveMin(Array, index, arrayLength));
+        RecursiveMin rm = new RecursiveMin(Array, index, arrayLength);
+        return pool.invoke(rm);
     }
     class RecursiveMin extends RecursiveTask<Integer> {
         private int myIndex;
