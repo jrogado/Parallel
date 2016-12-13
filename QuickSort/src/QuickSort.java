@@ -2,6 +2,7 @@ import java.util.Random;
 
 /**
  * Created by Jose Rogado on 21-11-2014.
+ * Quicksort serial version
  */
 public class QuickSort {
 
