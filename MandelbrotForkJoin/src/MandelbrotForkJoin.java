@@ -36,8 +36,6 @@ public class MandelbrotForkJoin extends JFrame {
     // The image buffer
     private BufferedImage image;
 
-    private double zx, zy, cX, cY, tmp;
-
     private final ForkJoinPool forkJoinPool;
 
     private MandelbrotForkJoin() {
@@ -87,12 +85,10 @@ public class MandelbrotForkJoin extends JFrame {
         private void computeSerial() {
             // System.out.println("computeSerial line: " + line +" , slices " + slices);
             // Slice dimension in coordinates
-            double partWidth = CxMax - CxMin;
             double partHeight = (CyMax - CyMin) / slices;
             // Slice dimension in pixels
             int partSizeX = sizeX;
             int partSizeY = sizeY / slices;
-            int lineSize = partSizeY*sizeX;
             // Starting point coordinates
             double cx0 = CxMin;
             double cy0 = CyMin + line*partHeight;
@@ -144,7 +140,7 @@ public class MandelbrotForkJoin extends JFrame {
             }
             int newSlices = 2*slices;
             int newLine = 2*line;
-            // Needs validation !!
+            // Invoke recursively
             invokeAll(new taskMandel(newLine, newSlices), new taskMandel(newLine+1, newSlices));
         }
     }
