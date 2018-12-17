@@ -57,24 +57,17 @@ public class md5CrackSerial {
     }
 
     private void hashExplore() {
-        int i, n, loops = 0, range = 0, digit = 0;
+        int i, n, loops = 0, digit;
         try {
             for (n = 0; n < nPasswords; n++) {
-                if (range == 0) {
-                    for (i = PASSLEN - 1; i >= 0; i--) {
-                        digit = (n % digitPowers[i + 1]) / digitPowers[i];
-                        password[PASSLEN - 1 - i] = byteSymbols[digit];
-                    }
-                    range = digit;
-                } else {
-                    password[PASSLEN - 1] = byteSymbols[range];
+                for (i = PASSLEN - 1; i >= 0; i--) {
+                    digit = (n % digitPowers[i + 1]) / digitPowers[i];
+                    password[PASSLEN - 1 - i] = byteSymbols[digit];
                 }
-                if (++range == symbols.length())
-                    range = 0;
                 // password[PASSLEN] =  0; // No need for trailing zero!
-                if (n % digitPowers[PASSLEN-1] == 0) { // Debug
+                if (n % digitPowers[PASSLEN - 1] == 0) { // Debug
                     System.out.printf("%6d ", n);
-                    printHash(password, password.length,"%c", true);
+                    printHash(password, password.length, "%c", true);
                 }
                 loops++;
                 if (testPass(password) == 0) {
@@ -122,7 +115,7 @@ public class md5CrackSerial {
         return diff;
     }
 
-    public static void main(String args[]) throws NoSuchAlgorithmException {
+    public static void main(String[] args) throws NoSuchAlgorithmException {
         String passHashString = "4e510be093d346512011c3f4fe36e4af";
         if (args.length == 1){
             passHashString = args[0];
@@ -151,7 +144,7 @@ public class md5CrackSerial {
 
     // Converts ascii hexadecimal to byte
     private static byte xtob(char c) {
-        byte result = 0;
+        byte result;
 
         switch (c) {
             case 'f':
@@ -200,6 +193,8 @@ public class md5CrackSerial {
                 result = 1;
                 break;
             case '0':
+                result = 0;
+            default:
                 result = 0;
         }
         return result;
